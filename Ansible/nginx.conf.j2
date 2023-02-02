@@ -1,0 +1,33 @@
+http {
+	include mime.types;
+
+	server {
+		listen 8080;
+		root /mysites/;
+
+		rewrite ^/number/(\w+) /count/$1;
+
+		location ~* /count/[0-9] {
+			root /mysites/;
+			try_files /index.html =404;
+		}
+
+		location /fruits {
+			root /mysites/;
+		}
+		location /carbs{
+                        alias /mysites/fruits;
+                }
+		location /vegetables {
+			root /mysites/;
+			try_files /vegetables/veggies.html /index.html =404;
+		}
+
+		location /crops {
+			return 307 /fruits;
+		}
+
+	}
+}
+
+events{}
